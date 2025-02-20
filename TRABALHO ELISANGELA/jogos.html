@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giga Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+    
+        header {
+            background-color: #4B0082;
+            color: rgb(255, 255, 255);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+       
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            top: 30px;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        
+        .container {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+      
+        .produto {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .carrinho {
+            margin-top: 20px;
+            border-top: 2px solid rgb(255, 255, 255);
+            padding-top: 15px;
+            color: white;
+        }
+
+       
+        .limpar-carrinho {
+            background-color: red;
+            color: rgb(255, 255, 255);
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+       
+    </style>
+</head>
+<body background="img/ped.jpg">
+
+   
+    <header>
+        <div class="logo">Giga <span>Games 🎮</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Jogos Disponiveis▼</a>
+                    <div class="dropdown-content">
+                        <a href="#">Red Dead Redemption 2</a>
+                        <a href="#">Elden Ring</a>
+                        <a href="#">GTA 5</a>
+                        <a href="#">Assassin's Creed Unity</a>
+                        <a href="#">The Last of Us</a>
+                    </div>
+                </li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="product">
+            <div id="produtos">
+                <div class="produto" data-nome="Red Dead Redemption" data-preco="50">
+                    <h2>Red Dead </h2><h2>Redemption 2</h2>
+                    <img src="img/rd2.jpg" alt="">
+                    <p> por apenas R$ 50,00</p><br>
+                    <button onclick="adicionarAoCarrinho(this)">Adicionar ao Carrinho 🛒</button>
+                </div>
+                <div class="produto" data-nome="Elden Ring" data-preco="30">
+                    <h2>Elden</h2> <h2>Ring</h2>
+                    <img src="img/elden.png" alt="">
+                    <p> por apenas R$ 30,00</p><br>
+                    <button onclick="adicionarAoCarrinho(this)">Adicionar ao Carrinho 🛒</button>
+                </div>
+                <div class="produto" data-nome="GTA 5" data-preco="35">
+                    <h2>Grand Theft</h2><h2>Auto 5</h2>
+                    <img src="img/gta5.jpg" alt="">
+                    <p> por apenas R$ 35,00</p><br>
+                    <button onclick="adicionarAoCarrinho(this)">Adicionar ao Carrinho 🛒</button>
+                </div>
+                <div class="produto" data-nome="Assassin's Creed Unity" data-preco="42">
+                    <h2>Assassin's Creed</h2><h2>Unity</h2>
+                    <img src="img/unity.jpg" alt="">
+                    <p> por apenas R$ 42,00</p><br>
+                    <button onclick="adicionarAoCarrinho(this)">Adicionar ao Carrinho 🛒</button>
+                </div>
+                <div class="produto" data-nome="The Last of Us" data-preco="48">
+                    <h2>The Last of Us</h2><h2>Remasterad</h2>
+                    <img src="img/last.jpg" alt="">
+                    <p> por apenas R$ 48,00</p><br>
+                    <button onclick="adicionarAoCarrinho(this)">Adicionar ao Carrinho 🛒</button>
+                </div>
+            </div>
+        </div> 
+
+        <div class="carrinho">
+            <h2>Carrinho 🛒</h2>
+            <ul id="itens-carrinho"></ul>
+            <p>Total: R$ <span id="total">0.00</span></p>
+            <button class="limpar-carrinho" onclick="limparCarrinho()">🗑 Limpar Carrinho</button>
+        </div>
+    </div>
+
+    <script>
+        let carrinho = [];
+
+        function adicionarAoCarrinho(botao) {
+            let produto = botao.parentElement;
+            let nome = produto.getAttribute("data-nome");
+            let preco = parseFloat(produto.getAttribute("data-preco"));
+            carrinho.push({ nome, preco });
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            let lista = document.getElementById("itens-carrinho");
+            lista.innerHTML = "";
+            let total = 0;
+            carrinho.forEach(item => {
+                let li = document.createElement("li");
+                li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+                lista.appendChild(li);
+                total += item.preco;
+            });
+            document.getElementById("total").textContent = total.toFixed(2);
+        }
+
+        function limparCarrinho() {
+            carrinho = [];
+            atualizarCarrinho();
+        }
+    </script>
+
+</body>
+</html>
